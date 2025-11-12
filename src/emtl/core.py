@@ -78,13 +78,6 @@ def _get_captcha_code() -> tuple[float, Any]:
     resp = get(f"{_urls['yzm']}{random_num}", headers=_base_headers, timeout=60)
     _check_resp(resp)
     code = ocr.classification(resp.content)
-    if code:
-        try:
-            code = int(code)
-        except Exception as e:
-            logger.error(f"get_captcha_code found exception: {e}, ocr result={code}")
-            return _get_captcha_code()
-
     return random_num, code
 
 
