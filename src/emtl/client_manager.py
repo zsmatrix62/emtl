@@ -8,6 +8,12 @@ from .client import EMTClient
 from .serializer import EMTClientSerializer
 
 
+class LoginFailedError(Exception):
+    """Exception raised when client login fails."""
+
+    pass
+
+
 class ClientManager:
     """Manager for EMTClient instances with serialization support.
 
@@ -45,7 +51,7 @@ class ClientManager:
 
         Raises:
             SerializerError: If serialization operations fail.
-            Exception: If login fails.
+            LoginFailedError: If login fails.
         """
         # Try to load from cache
         client = self.serializer.load(username)
@@ -54,7 +60,11 @@ class ClientManager:
 
         # Create new client and login
         client = EMTClient()
-        client.login(username, password)
+        validate_key = client.login(username, password)
+
+        # Check if login succeeded
+        if validate_key is None:
+            raise LoginFailedError(f"Login failed for user '{username}'. Please check username, password, and captcha.")
 
         # Save to serializer
         save_ttl = ttl if ttl is not None else self.default_ttl

@@ -5,6 +5,7 @@ EMTClient instances with expiration support.
 """
 
 import abc
+import os
 import time
 from pathlib import Path
 from typing import Optional
@@ -89,13 +90,31 @@ class DillSerializer(EMTClientSerializer):
     Expiration is checked on load based on the saved timestamp.
     """
 
-    def __init__(self, storage_dir: str | Path = "~/.emtl"):
+    def __init__(self, storage_dir: str | Path | None = None):
         """Initialize the serializer.
 
+        Storage directory is determined by:
+        1. Environment variable EMTL_STORAGE_DIR (if set)
+        2. Provided storage_dir argument (if set)
+        3. Default to .emtl/ in current working directory
+
         Args:
-            storage_dir: Directory to store serialized clients.
+            storage_dir: Optional directory to store serialized clients.
         """
-        self.storage_dir = Path(storage_dir).expanduser()
+        # Check environment variable first
+        env_dir = os.getenv("EMTL_STORAGE_DIR")
+
+        if env_dir:
+            # Environment variable takes precedence
+            dir_path = Path(env_dir)
+        elif storage_dir is not None:
+            # Use provided argument
+            dir_path = Path(storage_dir).expanduser()
+        else:
+            # Default to .emtl/ in current directory
+            dir_path = Path(".emtl")
+
+        self.storage_dir = dir_path
         self.storage_dir.mkdir(parents=True, exist_ok=True)
 
     def _get_file_path(self, username: str) -> Path:
