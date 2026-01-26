@@ -471,6 +471,28 @@ client = manager.get_client("user", "pass")
 3. **线程安全**: 每个客户端实例不是线程安全的，多线程请为每个线程创建独立实例
 4. **密码安全**: 建议使用环境变量存储密码，避免硬编码
 
+## API 响应示例
+
+运行 `python main.py` 会调用所有 API 方法并将响应保存到 `./examples/emapi/` 目录：
+
+```bash
+python main.py
+```
+
+生成的示例文件：
+
+| 文件 | 说明 |
+|------|------|
+| `query_orders.json` | 查询当前委托订单 |
+| `query_trades.json` | 查询成交记录 |
+| `query_asset_and_position.json` | 查询资产和持仓 |
+| `query_history_orders.json` | 查询历史订单（30天） |
+| `query_history_trades.json` | 查询历史成交（30天） |
+| `query_funds_flow.json` | 查询资金流水（30天） |
+| `get_last_price.json` | 获取最新股价 |
+
+这些示例文件展示了 API 的实际响应格式，可用于参考和测试。
+
 ## 开发
 
 ```bash
