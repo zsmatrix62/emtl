@@ -39,7 +39,7 @@ def get_last_price(symbol_code: str, market: str) -> float:
 
 
 def _check_resp(resp: Response):
-    if resp.status_code != 200:
+    if resp.status_code != 200 or resp.json().get("Status") == -1:
         logger.error(f"request {resp.url} fail, code={resp.status_code}, response={resp.text}")
         raise
 
