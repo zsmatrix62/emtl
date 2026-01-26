@@ -39,7 +39,18 @@ def get_last_price(symbol_code: str, market: str) -> float:
 
 
 def _check_resp(resp: Response):
-    if resp.status_code != 200 or resp.json().get("Status") == -1:
+    # 检查是否是图片
+    content_type = resp.headers.get("Content-Type", "")
+    is_image = "image" in content_type
+    is_json = "json" in content_type
+    if is_image:
+        return
+
+    if resp.status_code != 200:
+        logger.error(f"request {resp.url} fail, code={resp.status_code}, response={resp.text}")
+        raise
+
+    if is_json and resp.json().get("Status") == -1:
         logger.error(f"request {resp.url} fail, code={resp.status_code}, response={resp.text}")
         raise
 
