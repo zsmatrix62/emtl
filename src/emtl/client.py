@@ -16,17 +16,21 @@ from .utils import get_logger
 
 logger = get_logger(__name__)
 
+# Global OCR instance shared by all clients
+_global_ocr = DdddOcr(show_ad=False)
+
 
 class EMTClient:
     """EMT client adapter for multi-user support.
 
-    Each instance maintains its own session, OCR instance, and validation key.
+    Each instance maintains its own session and validation key.
+    OCR is shared globally across all clients.
     """
 
     def __init__(self) -> None:
-        self.ocr = DdddOcr(show_ad=False)
         self.session = Session()
         self._em_validate_key = ""
+        self.username: str = ""
 
     def _query_snapshot(self, symbol_code: str, market: str) -> Optional[dict]:
         url = "https://emhsmarketwg.eastmoneysec.com/api/SHSZQuoteSnapshot"
@@ -103,7 +107,7 @@ class EMTClient:
         random_num = cryptogen.random()
         resp = get(f"{_urls['yzm']}{random_num}", headers=_base_headers, timeout=60)
         self._check_resp(resp)
-        code = self.ocr.classification(resp.content)
+        code = _global_ocr.classification(resp.content)
         return random_num, code
 
     def _get_em_validate_key(self) -> Optional[str]:
@@ -138,6 +142,9 @@ class EMTClient:
             username = os.getenv("EM_USERNAME", "")
         if not password:
             password = os.getenv("EM_PASSWORD", "")
+
+        # Store username for serialization
+        self.username = username.strip()
 
         random_num, code = self._get_captcha_code()
         headers = _base_headers.copy()
