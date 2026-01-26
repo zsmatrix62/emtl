@@ -456,13 +456,83 @@ client = manager.get_client("user", "pass")
 client = manager.get_client("user", "pass")
 ```
 
-## 环境变量
+## 环境变量与配置
 
-| 变量名 | 说明 |
-|--------|------|
-| `EM_USERNAME` | 默认用户名 |
-| `EM_PASSWORD` | 默认密码 |
-| `EMTL_STORAGE_DIR` | 缓存存储目录 |
+### 环境变量
+
+| 变量名 | 说明 | 默认值 |
+|--------|------|--------|
+| `EM_USERNAME` | EMT 登录用户名 | 无（必须提供） |
+| `EM_PASSWORD` | EMT 登录密码 | 无（必须提供） |
+| `EMTL_STORAGE_DIR` | 会话缓存存储目录 | `./emtl/` |
+
+### ClientManager 配置
+
+```python
+from emtl import ClientManager, DillSerializer
+
+# 存储目录优先级：
+# 1. EMTL_STORAGE_DIR 环境变量
+# 2. DillSerializer 构造参数
+# 3. 默认 ./emtl/
+
+# 方式1: 使用环境变量
+import os
+os.environ["EMTL_STORAGE_DIR"] = "./cache/emtl"
+manager = ClientManager(DillSerializer())
+
+# 方式2: 使用构造参数
+manager = ClientManager(DillSerializer("./cache/emtl"))
+
+# 方式3: 使用默认（./emtl/）
+manager = ClientManager(DillSerializer())
+```
+
+### TTL 配置
+
+```python
+from emtl import ClientManager, DillSerializer
+
+# 设置默认 TTL（秒）
+manager = ClientManager(DillSerializer(), default_ttl=7200)  # 2 小时
+
+# 覆盖单个客户端的 TTL
+client = manager.get_client("user", "pass", ttl=3600)  # 1 小时
+```
+
+**默认 TTL 值：**
+- `ClientManager.default_ttl`: `7200` (2 小时)
+
+### 登录会话时长
+
+```python
+# 登录时设置会话时长（分钟）
+client = EMTClient()
+client.login("user", "pass", duration=180)  # 3 小时
+```
+
+**默认 duration 值：**
+- `EMTClient.login(duration=...)`: `180` (3 小时)
+
+### 配置示例
+
+```python
+import os
+from emtl import ClientManager, DillSerializer
+
+# 完整配置示例
+os.environ["EM_USERNAME"] = "your_username"
+os.environ["EM_PASSWORD"] = "your_password"
+os.environ["EMTL_STORAGE_DIR"] = "./data/cache"
+
+manager = ClientManager(
+    DillSerializer(),  # 使用环境变量中的存储目录
+    default_ttl=3600    # 1 小时 TTL
+)
+
+# 获取客户端（自动使用环境变量中的凭据）
+client = manager.get_client()  # 如果未传参，会使用环境变量
+```
 
 ## 注意事项
 
