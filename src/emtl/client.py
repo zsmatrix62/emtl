@@ -10,7 +10,8 @@ from requests import get
 
 from .const import _base_headers
 from .const import _urls
-from .error import EmAPIError, LoginFailedError
+from .error import EmAPIError
+from .error import LoginFailedError
 from .utils import emt_trade_encrypt
 from .utils import get_float
 from .utils import get_logger
@@ -65,19 +66,11 @@ class EMTClient:
 
         if resp.status_code != 200:
             logger.error(f"request {resp.url} fail, code={resp.status_code}, response={resp.text}")
-            raise EmAPIError(
-                f"HTTP error: {resp.status_code}",
-                status_code=resp.status_code,
-                response=resp.text
-            )
+            raise EmAPIError(f"HTTP error: {resp.status_code}", status_code=resp.status_code, response=resp.text)
 
         if is_json and resp.json().get("Status") == -1:
             logger.error(f"request {resp.url} fail, code={resp.status_code}, response={resp.text}")
-            raise EmAPIError(
-                f"API error: {resp.text}",
-                status_code=resp.status_code,
-                response=resp.text
-            )
+            raise EmAPIError(f"API error: {resp.text}", status_code=resp.status_code, response=resp.text)
 
     def _query_something(self, tag: str, req_data: Optional[dict] = None) -> Optional[Response]:
         """Generic query function for EMT API.
@@ -144,13 +137,13 @@ class EMTClient:
                 return _em_validatekey
         return None
 
-    def login(self, username: str = "", password: str = "", duration: int = 30) -> Optional[str]:
+    def login(self, username: str = "", password: str = "", duration: int = 180) -> Optional[str]:
         """Login to EMT trading platform.
 
         Args:
             username: EMT username (defaults to EM_USERNAME env var)
             password: EMT password in plaintext (defaults to EM_PASSWORD env var)
-            duration: Session duration in minutes, defaults to 30
+            duration: Session duration in minutes, defaults to 180
 
         Returns:
             Validation key string if login succeeds, None otherwise

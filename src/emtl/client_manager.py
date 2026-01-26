@@ -16,7 +16,7 @@ class ClientManager:
     as needed, with automatic serialization for session persistence.
     """
 
-    def __init__(self, serializer: EMTClientSerializer, default_ttl: int = 1800):
+    def __init__(self, serializer: EMTClientSerializer, default_ttl: int = 120 * 60):
         """Initialize the client manager.
 
         Args:
