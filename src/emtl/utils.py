@@ -1,6 +1,5 @@
 import base64
 import logging
-import math
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
@@ -16,8 +15,15 @@ c0AT4qIJ/xtbBcHkFPK77upnsfDTJiVEuQDH+MiMeb+XhCLNKZGp0yaUU6GlxZdp
 """
 
 
-def get_logger(name):
-    """Logger."""
+def get_logger(name: str) -> logging.Logger:
+    """Configure and return a logger instance.
+
+    Args:
+        name: Logger name, typically __name__ of the calling module
+
+    Returns:
+        Configured logger instance
+    """
     formater = "%(asctime)s %(name)-20s %(funcName)s %(lineno)d: %(levelname)-8s: %(message)s"
     logging.basicConfig(format=formater, force=True, level=logging.INFO)
     logger = logging.getLogger(name)
@@ -25,22 +31,44 @@ def get_logger(name):
 
 
 def emt_trade_encrypt(content: str) -> str:
+    """Encrypt content using RSA public key for EMT trading.
+
+    Args:
+        content: Plaintext content to encrypt
+
+    Returns:
+        Base64 encoded encrypted string
+    """
     _pub_key: rsa.RSAPublicKey = serialization.load_pem_public_key(rsa_public_key.encode("utf-8"))  # type:ignore
     encrypt_text = _pub_key.encrypt(content.encode(), padding.PKCS1v15())
     return base64.b64encode(encrypt_text).decode("utf-8")
 
 
-def double_equal(a, b) -> bool:
-    return math.fabs(a - b) < 1e-6
-
-
 def get_float(data: dict, key: str) -> float:
+    """Extract and convert string value to float from dict.
+
+    Args:
+        data: Dictionary containing the value
+        key: Key to look up in the dictionary
+
+    Returns:
+        Float value or 0.0 if value is empty
+    """
     if v := data[key].strip():
         return float(v)
     return 0.0
 
 
 def get_int(data: dict, key: str) -> int:
+    """Extract and convert string value to int from dict.
+
+    Args:
+        data: Dictionary containing the value
+        key: Key to look up in the dictionary
+
+    Returns:
+        Integer value or 0 if value is empty
+    """
     if v := data[key].strip():
         return int(v)
     return 0

@@ -1,4 +1,6 @@
-_urls: dict = {
+"""EMT API constants."""
+
+_urls: dict[str, str] = {
     "yzm": "https://jywg.18.cn/Login/YZM?randNum=",
     "login": "https://jywg.18.cn/Login/Authentication?validatekey=",
     "query_asset_and_pos": "https://jywg.18.cn/Com/queryAssetAndPositionV1?validatekey=",
@@ -11,9 +13,11 @@ _urls: dict = {
     "create_order": "https://jywg.18.cn/Trade/SubmitTradeV2?validatekey=",
     "cancel_order": "https://jywg.18.cn/Trade/RevokeOrders?validatekey=",
 }
-_base_headers: dict = {
+
+_base_headers: dict[str, str] = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
     "Chrome/114.0.0.0 Safari/537.36",
     "Origin": "https://jywg.18.cn",
     "Host": "jywg.18.cn",
 }
+

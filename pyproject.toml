@@ -51,9 +51,6 @@ dev = [
     "pytest-cov>=4.0",
 ]
 
-[project.scripts]
-emt = "emtl.cli:run"
-
 [tool.setuptools_scm]
 local_scheme = "dirty-tag"
 write_to = "src/emtl/_version.py"
