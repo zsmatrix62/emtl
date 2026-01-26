@@ -8,14 +8,20 @@ trades programmatically with multi-user support and session persistence.
 __version__ = "0.2.8"
 
 from .client import EMTClient
-from .client_manager import ClientManager, LoginFailedError
+from .client_manager import ClientManager
+from .error import EmtlException, EmAPIError, LoginFailedError
 from .serializer import DillSerializer, EMTClientSerializer, SerializerError
 
 __all__ = [
+    # Core classes
     "EMTClient",
     "ClientManager",
-    "LoginFailedError",
+    # Serializers
     "EMTClientSerializer",
     "DillSerializer",
+    # Exceptions
+    "EmtlException",
+    "LoginFailedError",
+    "EmAPIError",
     "SerializerError",
 ]

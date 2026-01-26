@@ -5,13 +5,8 @@ including loading from cache and creating new instances when needed.
 """
 
 from .client import EMTClient
+from .error import LoginFailedError
 from .serializer import EMTClientSerializer
-
-
-class LoginFailedError(Exception):
-    """Exception raised when client login fails."""
-
-    pass
 
 
 class ClientManager:

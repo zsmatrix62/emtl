@@ -10,6 +10,7 @@ from requests import get
 
 from .const import _base_headers
 from .const import _urls
+from .error import EmAPIError, LoginFailedError
 from .utils import emt_trade_encrypt
 from .utils import get_float
 from .utils import get_logger
@@ -47,6 +48,14 @@ class EMTClient:
 
     @staticmethod
     def _check_resp(resp: Response) -> None:
+        """Check HTTP response for errors.
+
+        Args:
+            resp: Response object to check
+
+        Raises:
+            EmAPIError: If response indicates an error
+        """
         content_type = resp.headers.get("Content-Type", "")
         is_image = "image" in content_type
         is_json = "json" in content_type
@@ -56,11 +65,19 @@ class EMTClient:
 
         if resp.status_code != 200:
             logger.error(f"request {resp.url} fail, code={resp.status_code}, response={resp.text}")
-            raise
+            raise EmAPIError(
+                f"HTTP error: {resp.status_code}",
+                status_code=resp.status_code,
+                response=resp.text
+            )
 
         if is_json and resp.json().get("Status") == -1:
             logger.error(f"request {resp.url} fail, code={resp.status_code}, response={resp.text}")
-            raise
+            raise EmAPIError(
+                f"API error: {resp.text}",
+                status_code=resp.status_code,
+                response=resp.text
+            )
 
     def _query_something(self, tag: str, req_data: Optional[dict] = None) -> Optional[Response]:
         """Generic query function for EMT API.
@@ -169,10 +186,15 @@ class EMTClient:
 
         try:
             logger.info(f"login success for {resp.json()}")
-            return self._get_em_validate_key()
+            validate_key = self._get_em_validate_key()
         except KeyError as e:
             logger.error(f"param data found exception:[{e}], [data={resp}]")
-            return None
+            validate_key = None
+
+        # Check if login succeeded
+        if validate_key is None:
+            raise LoginFailedError(f"Login failed for user '{username}'. Please check username, password, and captcha.")
+        return validate_key
 
     def query_asset_and_position(self) -> Optional[dict]:
         """Get asset and position information.
