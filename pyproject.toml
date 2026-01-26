@@ -1,14 +1,75 @@
 [build-system]
-requires = [
-    "setuptools>=30.3.0",
-    "setuptools_scm>=3.3.1",
+requires = ["setuptools>=61.0", "setuptools_scm>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "emtl"
+dynamic = ["version"]
+description = "东方财富自动交易接口"
+readme = "README.rst"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Riiy", email = "riiyzhou@gmail.com" },
 ]
+keywords = [
+    "autotrade",
+    "trade",
+    "东方财富",
+    "股票",
+    "交易",
+    "交易机器人",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Unix",
+    "Operating System :: POSIX",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "rsa==4.9",
+    "requests==2.31.0",
+    "ddddocr==1.4.11",
+    "cryptography==42.0.5",
+]
+
+[project.urls]
+Documentation = "https://emtl.readthedocs.io/"
+Changelog = "https://emtl.readthedocs.io/en/latest/changelog.html"
+"Issue Tracker" = "https://github.com/riiy/emtl/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=4.0",
+]
+
+[project.scripts]
+emt = "emtl.cli:run"
+
 [tool.setuptools_scm]
+local_scheme = "dirty-tag"
+write_to = "src/emtl/_version.py"
+fallback_version = "0.2.6"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
 [tool.ruff]
 extend-exclude = ["static", "ci/templates"]
 line-length = 140
 src = ["src", "tests"]
-target-version = "py38"
+target-version = "py310"
 
 [tool.ruff.lint.per-file-ignores]
 "ci/*" = ["S"]
@@ -54,4 +115,4 @@ force-single-line = true
 
 [tool.black]
 line-length = 140
-target-version = ["py38"]
+target-version = ["py310"]
