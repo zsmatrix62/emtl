@@ -1,0 +1,427 @@
+{
+  "Djzj": {
+    "chinese": "冻结资金",
+    "data_type": "number",
+    "example": 8544.32
+  },
+  "Dryk": {
+    "chinese": "当日盈亏",
+    "data_type": "number",
+    "example": -12814.48
+  },
+  "Kqzj": {
+    "chinese": "可取资金",
+    "data_type": "number",
+    "example": 10000.0
+  },
+  "Kyzj": {
+    "chinese": "可用资金",
+    "data_type": "number",
+    "example": 19090.39
+  },
+  "Ljyk": {
+    "chinese": "累计盈亏",
+    "data_type": "number",
+    "example": 20903.66
+  },
+  "Money_type": {
+    "chinese": "货币类型",
+    "data_type": "string",
+    "example": "RMB"
+  },
+  "RMBZzc": {
+    "chinese": "人民币总资产",
+    "data_type": "number",
+    "example": 598248.31
+  },
+  "Zjye": {
+    "chinese": "资金余额",
+    "data_type": "number",
+    "example": 57129.1
+  },
+  "Zxsz": {
+    "chinese": "最新市值",
+    "data_type": "number",
+    "example": 579703.89
+  },
+  "Zzc": {
+    "chinese": "总资产",
+    "data_type": "number",
+    "example": 598248.31
+  },
+  "Bz": {
+    "chinese": "币种",
+    "data_type": "string",
+    "example": "RMB"
+  },
+  "Cbjg": {
+    "chinese": "成本价格",
+    "data_type": "number",
+    "example": 11.846
+  },
+  "Cbjgex": {
+    "chinese": "成本价格(含费用)",
+    "data_type": "number",
+    "example": 11.742
+  },
+  "Ckcb": {
+    "chinese": "参考成本",
+    "data_type": "number",
+    "example": 107800.6
+  },
+  "Ckcbj": {
+    "chinese": "参考成本价",
+    "data_type": "number",
+    "example": 11.846
+  },
+  "Ckyk": {
+    "chinese": "参考盈亏",
+    "data_type": "number",
+    "example": -2604.6
+  },
+  "Cwbl": {
+    "chinese": "仓位比例",
+    "data_type": "number",
+    "example": 0.17584
+  },
+  "Djsl": {
+    "chinese": "冻结数量",
+    "data_type": "number",
+    "example": 0
+  },
+  "Dqcb": {
+    "chinese": "当前成本",
+    "data_type": "number",
+    "example": 106854.15
+  },
+  "Gddm": {
+    "chinese": "股东代码",
+    "data_type": "string",
+    "example": "0917534836"
+  },
+  "Gfmcdj": {
+    "chinese": "股份卖出冻结",
+    "data_type": "number",
+    "example": 2000
+  },
+  "Gfmrjd": {
+    "chinese": "股份买入解冻",
+    "data_type": "number",
+    "example": 0
+  },
+  "Gfssmmce": {
+    "chinese": "股份实时买卖差额",
+    "data_type": "number",
+    "example": 2000
+  },
+  "Gfye": {
+    "chinese": "股份余额",
+    "data_type": "number",
+    "example": 7100
+  },
+  "Jgbm": {
+    "chinese": "机构编码",
+    "data_type": "string",
+    "example": "5409"
+  },
+  "Khdm": {
+    "chinese": "客户代码",
+    "data_type": "string",
+    "example": "540975113619"
+  },
+  "Ksssl": {
+    "chinese": "可售数量",
+    "data_type": "number",
+    "example": 7100
+  },
+  "Kysl": {
+    "chinese": "可用数量",
+    "data_type": "number",
+    "example": 5100
+  },
+  "Market": {
+    "chinese": "市场代码",
+    "data_type": "string",
+    "example": "SA"
+  },
+  "Mrssc": {
+    "chinese": "买入市场",
+    "data_type": "number",
+    "example": 2000
+  },
+  "Sssl": {
+    "chinese": "实收数量",
+    "data_type": "number",
+    "example": 0
+  },
+  "Szjsbs": {
+    "chinese": "市值计算标识",
+    "data_type": "number",
+    "example": 1
+  },
+  "Ykbl": {
+    "chinese": "盈亏比例",
+    "data_type": "number",
+    "example": -0.024143
+  },
+  "Zjzh": {
+    "chinese": "资金账号",
+    "data_type": "string",
+    "example": "100000300000"
+  },
+  "Zqdm": {
+    "chinese": "证券代码",
+    "data_type": "string",
+    "example": "300221"
+  },
+  "Zqlx": {
+    "chinese": "证券类型",
+    "data_type": "string",
+    "example": "R"
+  },
+  "Zqlxmc": {
+    "chinese": "证券类型名称",
+    "data_type": "string",
+    "example": "R"
+  },
+  "Zqmc": {
+    "chinese": "证券名称",
+    "data_type": "string",
+    "example": "银禧科技"
+  },
+  "Zqsl": {
+    "chinese": "证券数量",
+    "data_type": "number",
+    "example": 9100
+  },
+  "Ztmc": {
+    "chinese": "涨停卖出",
+    "data_type": "number",
+    "example": 0
+  },
+  "Ztmr": {
+    "chinese": "涨停买入",
+    "data_type": "number",
+    "example": 0
+  },
+  "Zxjg": {
+    "chinese": "最新价格",
+    "data_type": "number",
+    "example": 11.56
+  },
+  "zqzwqc": {
+    "chinese": "证券中文全称",
+    "data_type": "string",
+    "example": "银禧科技"
+  },
+  "zxsznew": {
+    "chinese": "最新市值(新)",
+    "data_type": "number",
+    "example": 105196.0
+  },
+  "Wtsj": {
+    "chinese": "委托时间",
+    "data_type": "string",
+    "example": "141855"
+  },
+  "Mmsm": {
+    "chinese": "买卖说明",
+    "data_type": "string",
+    "example": "证券买入"
+  },
+  "Mmlb": {
+    "chinese": "买卖类别",
+    "data_type": "string",
+    "example": "B"
+  },
+  "Wtsl": {
+    "chinese": "委托数量",
+    "data_type": "number",
+    "example": 1600
+  },
+  "Wtzt": {
+    "chinese": "委托状态",
+    "data_type": "string",
+    "example": "已成"
+  },
+  "Wtjg": {
+    "chinese": "委托价格",
+    "data_type": "number",
+    "example": 68.44
+  },
+  "Cjsl": {
+    "chinese": "成交数量",
+    "data_type": "number",
+    "example": 1600
+  },
+  "Cjje": {
+    "chinese": "成交金额",
+    "data_type": "number",
+    "example": 109485.0
+  },
+  "Cjjg": {
+    "chinese": "成交价格",
+    "data_type": "number",
+    "example": 68.428125
+  },
+  "Wtbh": {
+    "chinese": "委托编号",
+    "data_type": "string",
+    "example": "1948605"
+  },
+  "Dwc": {
+    "chinese": "定位串",
+    "data_type": "string",
+    "example": ""
+  },
+  "Qqhs": {
+    "chinese": "请求函数",
+    "data_type": "null",
+    "example": null
+  },
+  "Wtrq": {
+    "chinese": "委托日期",
+    "data_type": "string",
+    "example": "20260128"
+  },
+  "Wtph": {
+    "chinese": "委托批号",
+    "data_type": "string",
+    "example": "1948605"
+  },
+  "Khxm": {
+    "chinese": "客户姓名",
+    "data_type": "string",
+    "example": "张三"
+  },
+  "Bpsj": {
+    "chinese": "报盘时间",
+    "data_type": "string",
+    "example": "141855"
+  },
+  "Cpbm": {
+    "chinese": "产品编码",
+    "data_type": "string",
+    "example": ""
+  },
+  "Cpmc": {
+    "chinese": "产品名称",
+    "data_type": "string",
+    "example": ""
+  },
+  "Djje": {
+    "chinese": "冻结金额",
+    "data_type": "number",
+    "example": 109516.05
+  },
+  "Cdsl": {
+    "chinese": "撤单数量",
+    "data_type": "number",
+    "example": 0
+  },
+  "Jyxw": {
+    "chinese": "交易席位",
+    "data_type": "string",
+    "example": "50578"
+  },
+  "Cdbs": {
+    "chinese": "撤单标识",
+    "data_type": "string",
+    "example": "F"
+  },
+  "Czrq": {
+    "chinese": "操作日期",
+    "data_type": "string",
+    "example": "20260128"
+  },
+  "Wtqd": {
+    "chinese": "委托渠道",
+    "data_type": "string",
+    "example": "9"
+  },
+  "Bzxx": {
+    "chinese": "备注信息",
+    "data_type": "string",
+    "example": ""
+  },
+  "Sbhtxh": {
+    "chinese": "申报合同序号",
+    "data_type": "string",
+    "example": "0801948605"
+  },
+  "Mmlb_ex": {
+    "chinese": "买卖类别扩展",
+    "data_type": "string",
+    "example": "B"
+  },
+  "Mmlb_bs": {
+    "chinese": "买卖类别标识",
+    "data_type": "string",
+    "example": "B"
+  },
+  "Cjsj": {
+    "chinese": "成交时间",
+    "data_type": "string",
+    "example": "141855"
+  },
+  "Cjsj2": {
+    "chinese": "成交时间2",
+    "data_type": "string",
+    "example": "141855"
+  },
+  "Cjbh": {
+    "chinese": "成交编号",
+    "data_type": "string",
+    "example": "0000000068394251"
+  },
+  "Htxh": {
+    "chinese": "合同序号",
+    "data_type": "null",
+    "example": null
+  },
+  "Cjlx": {
+    "chinese": "成交类型",
+    "data_type": "string",
+    "example": "0"
+  },
+  "Zqyjlx": {
+    "chinese": "证券佣金类型",
+    "data_type": "string",
+    "example": ".00000000"
+  },
+  "totalSecMkval": {
+    "chinese": "证券总市值",
+    "data_type": "number",
+    "example": 577483.2
+  },
+  "Status": {
+    "chinese": "状态码",
+    "data_type": "number",
+    "example": 0
+  },
+  "Count": {
+    "chinese": "数据条数",
+    "data_type": "number",
+    "example": 0
+  },
+  "Data": {
+    "chinese": "数据内容",
+    "data_type": "array",
+    "example": []
+  },
+  "Errcode": {
+    "chinese": "错误代码",
+    "data_type": "number",
+    "example": 0
+  },
+  "positions": {
+    "chinese": "持仓列表",
+    "data_type": "array",
+    "example": []
+  },
+  "bonds": {
+    "chinese": "债券列表",
+    "data_type": "array",
+    "example": []
+  }
+}
