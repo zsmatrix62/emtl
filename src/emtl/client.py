@@ -13,6 +13,7 @@ from .const import _base_headers
 from .const import _urls
 from .error import EmAPIError
 from .error import LoginFailedError
+from .error import SessionExpiredError
 from .utils import emt_trade_encrypt
 from .utils import get_float
 from .utils import get_logger
@@ -69,9 +70,15 @@ class EMTClient:
             logger.error(f"request {resp.url} fail, code={resp.status_code}, response={resp.text}")
             raise EmAPIError(f"HTTP error: {resp.status_code}", status_code=resp.status_code, response=resp.text)
 
-        if is_json and resp.json().get("Status") == -1:
-            logger.error(f"request {resp.url} fail, code={resp.status_code}, response={resp.text}")
-            raise EmAPIError(f"API error: {resp.text}", status_code=resp.status_code, response=resp.text)
+        if is_json:
+            json_resp = resp.json()
+            status = json_resp.get("Status")
+            if status == -2:
+                logger.warning(f"session expired: {resp.text}")
+                raise SessionExpiredError("Session expired, please login again")
+            elif status == -1:
+                logger.error(f"request {resp.url} fail, code={resp.status_code}, response={resp.text}")
+                raise EmAPIError(f"API error: {resp.text}", status_code=resp.status_code, response=resp.text)
 
     def _query_something(self, tag: str, req_data: Optional[dict] = None) -> Optional[Response]:
         """Generic query function for EMT API.
@@ -107,6 +114,28 @@ class EMTClient:
         resp = self.session.post(url, headers=headers, data=req_data)
         self._check_resp(resp)
         return resp
+
+    def _query_something_with_retry(self, tag: str, req_data: Optional[dict] = None) -> Optional[Response]:
+        """Generic query function with automatic retry on session expiration.
+
+        Args:
+            tag: Request type identifier
+            req_data: Optional request payload data
+
+        Returns:
+            Response object or None if request fails
+
+        Raises:
+            AssertionError: If tag is not in _urls
+            LoginFailedError: If re-login fails
+        """
+        try:
+            return self._query_something(tag, req_data)
+        except SessionExpiredError:
+            # Session expired, clear cache and re-login
+            self._re_login()
+            # Retry the request once
+            return self._query_something(tag, req_data)
 
     def _get_captcha_code(self) -> tuple[float, str]:
         """Get random number and captcha code.
@@ -190,6 +219,44 @@ class EMTClient:
             raise LoginFailedError(f"Login failed for user '{username}'. Please check username, password, and captcha.")
         return validate_key
 
+    def _re_login(self) -> str:
+        """Re-login after session expiration.
+
+        Clears the cached validation key and performs a new login.
+
+        Returns:
+            Validation key string if login succeeds
+
+        Raises:
+            LoginFailedError: If re-login fails
+        """
+        logger.info("Session expired, attempting to re-login...")
+        # Clear the cached validation key
+        self._em_validate_key = ""
+        # Re-login using stored username and environment variables
+        validate_key = self.login(self.username)
+        if validate_key is None:
+            raise LoginFailedError("Re-login failed after session expiration")
+        return validate_key
+
+    def verify_session(self) -> bool:
+        """Verify if the current session is still valid.
+
+        Makes a lightweight API call to check session validity.
+
+        Returns:
+            True if session is valid, False otherwise.
+        """
+        if not self._em_validate_key:
+            return False
+
+        try:
+            # Use a lightweight query to verify session
+            resp = self._query_something("query_asset_and_pos")
+            return resp is not None
+        except (SessionExpiredError, EmAPIError, Exception):
+            return False
+
     def query_abbrs(self, *keys: str) -> dict:
         """Query abbreviation mappings from abbrs.json.
 
@@ -223,7 +290,7 @@ class EMTClient:
         Returns:
             Dict containing asset and position data or None
         """
-        resp = self._query_something("query_asset_and_pos")
+        resp = self._query_something_with_retry("query_asset_and_pos")
         if resp:
             return resp.json()
         return None
@@ -234,7 +301,7 @@ class EMTClient:
         Returns:
             Dict containing orders data or None
         """
-        resp = self._query_something("query_orders")
+        resp = self._query_something_with_retry("query_orders")
         if resp:
             return resp.json()
         return None
@@ -245,7 +312,7 @@ class EMTClient:
         Returns:
             Dict containing trades data or None
         """
-        resp = self._query_something("query_trades")
+        resp = self._query_something_with_retry("query_trades")
         if resp:
             return resp.json()
         return None
@@ -262,7 +329,7 @@ class EMTClient:
             Dict containing historical orders data or None
         """
         req_data = {"qqhs": size, "dwc": "", "st": start_time, "et": end_time}
-        resp = self._query_something("query_his_orders", req_data)
+        resp = self._query_something_with_retry("query_his_orders", req_data)
         if resp:
             return resp.json()
         return None
@@ -279,7 +346,7 @@ class EMTClient:
             Dict containing historical trades data or None
         """
         req_data = {"qqhs": size, "dwc": "", "st": start_time, "et": end_time}
-        resp = self._query_something("query_his_trades", req_data)
+        resp = self._query_something_with_retry("query_his_trades", req_data)
         if resp:
             return resp.json()
         return None
@@ -296,7 +363,7 @@ class EMTClient:
             Dict containing funds flow data or None
         """
         req_data = {"qqhs": size, "dwc": "", "st": start_time, "et": end_time}
-        resp = self._query_something("query_funds_flow", req_data)
+        resp = self._query_something_with_retry("query_funds_flow", req_data)
         if resp:
             return resp.json()
         return None
@@ -322,7 +389,7 @@ class EMTClient:
             "price": price,
             "amount": amount,
         }
-        resp = self._query_something("create_order", req_data)
+        resp = self._query_something_with_retry("create_order", req_data)
         if resp:
             logger.info(resp.json())
             return resp.json()
@@ -339,7 +406,7 @@ class EMTClient:
             Response text or None
         """
         data = {"revokes": order_str.strip()}
-        resp = self._query_something("cancel_order", req_data=data)
+        resp = self._query_something_with_retry("cancel_order", req_data=data)
         if resp:
             return resp.text.strip()
         return None

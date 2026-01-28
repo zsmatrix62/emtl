@@ -12,6 +12,7 @@ from .client_manager import ClientManager
 from .error import EmAPIError
 from .error import EmtlException
 from .error import LoginFailedError
+from .error import SessionExpiredError
 from .serializer import DillSerializer
 from .serializer import EMTClientSerializer
 from .serializer import SerializerError

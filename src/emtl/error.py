@@ -55,3 +55,16 @@ class EmAPIError(EmtlException):
         super().__init__(message)
         self.status_code = status_code
         self.response = response
+
+
+class SessionExpiredError(EmtlException):
+    """Exception raised when the session has expired.
+
+    This occurs when the API returns Status == -2 with message
+    "会话已超时，请重新登录!" (Session expired, please login again).
+
+    Attributes:
+        message: Human-readable error description
+    """
+
+    pass
