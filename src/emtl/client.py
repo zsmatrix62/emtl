@@ -1,3 +1,4 @@
+import json
 import os
 import re
 from random import SystemRandom
@@ -188,6 +189,33 @@ class EMTClient:
         if validate_key is None:
             raise LoginFailedError(f"Login failed for user '{username}'. Please check username, password, and captcha.")
         return validate_key
+
+    def query_abbrs(self, *keys: str) -> dict:
+        """Query abbreviation mappings from abbrs.json.
+
+        Args:
+            *keys: One or more abbreviation keys to look up
+
+        Returns:
+            Dict containing the abbreviation data for the specified keys.
+            If no keys provided, returns all abbreviations.
+            If a key is not found, it will be omitted from the result.
+
+        Example:
+            >>> client.query_abbrs("Zqdm", "Zqmc")
+            {"Zqdm": {...}, "Zqmc": {...}}
+        """
+        # Get the directory of this file to locate abbrs.json
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        abbrs_path = os.path.join(current_dir, "..", "..", "abbrs.json")
+
+        with open(abbrs_path, "r", encoding="utf-8") as f:
+            all_abbrs = json.load(f)
+
+        if not keys:
+            return all_abbrs
+
+        return {k: all_abbrs[k] for k in keys if k in all_abbrs}
 
     def query_asset_and_position(self) -> Optional[dict]:
         """Get asset and position information.
