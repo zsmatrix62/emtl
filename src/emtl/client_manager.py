@@ -62,6 +62,7 @@ class ClientManager:
 
                 # Create new client and login
                 client = EMTClient()
+                print(1111, client)
                 validate_key = client.login(username, password)
 
                 # Check if login succeeded

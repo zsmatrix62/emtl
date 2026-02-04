@@ -61,7 +61,19 @@ class EMTClient:
         """
         content_type = resp.headers.get("Content-Type", "")
         is_image = "image" in content_type
-        is_json = "json" in content_type
+
+        try:
+            json_resp = resp.json()
+        except:
+            json_resp = None
+
+        is_json = False
+        if json_resp:
+            try:
+                json.dumps(json_resp)
+                is_json = True
+            except:
+                ...
 
         if is_image:
             return
@@ -71,8 +83,7 @@ class EMTClient:
             raise EmAPIError(f"HTTP error: {resp.status_code}", status_code=resp.status_code, response=resp.text)
 
         if is_json:
-            json_resp = resp.json()
-            status = json_resp.get("Status")
+            status = (json_resp or {}).get("Status")
             if status == -2:
                 logger.warning(f"session expired: {resp.text}")
                 raise SessionExpiredError("Session expired, please login again")
