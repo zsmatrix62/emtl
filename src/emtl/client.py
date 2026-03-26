@@ -306,6 +306,42 @@ class EMTClient:
             return resp.json()
         return None
 
+    def query_credit_asset_and_position(self) -> Optional[dict]:
+        """Get credit account asset and position information.
+
+        Returns:
+            Dict containing credit account asset and position data or None
+        """
+        resp = self._query_something_with_retry("query_credit_position")
+        if resp:
+            return resp.json()
+        return None
+
+    def unified_assets_and_positions(self) -> dict:
+        """Get unified assets and positions from both normal and credit accounts.
+
+        Returns:
+            Dict containing unified data with keys:
+            - normal: Normal account asset and position data
+            - credit: Credit account asset and position data
+        """
+        result = {
+            "normal": None,
+            "credit": None,
+        }
+
+        try:
+            result["normal"] = self.query_asset_and_position()
+        except Exception as e:
+            logger.warning(f"Failed to query normal account: {e}")
+
+        try:
+            result["credit"] = self.query_credit_asset_and_position()
+        except Exception as e:
+            logger.warning(f"Failed to query credit account: {e}")
+
+        return result
+
     def query_orders(self) -> Optional[dict]:
         """Query current orders.
 

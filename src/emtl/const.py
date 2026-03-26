@@ -13,6 +13,7 @@ _urls: dict[str, str] = {
     "query_positions": "https://jywg.18.cn/Search/GetStockList?validatekey=",
     "create_order": "https://jywg.18.cn/Trade/SubmitTradeV2?validatekey=",
     "cancel_order": "https://jywg.18.cn/Trade/RevokeOrders?validatekey=",
+    "query_credit_position": "https://jywg.18.cn/MarginSearch/queryCreditNewPosV2?validatekey=",
 }
 
 _base_headers: dict[str, str] = {
