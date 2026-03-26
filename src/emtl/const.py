@@ -1,5 +1,6 @@
 """EMT API constants."""
 
+#
 _urls: dict[str, str] = {
     "yzm": "https://jywg.18.cn/Login/YZM?randNum=",
     "login": "https://jywg.18.cn/Login/Authentication?validatekey=",
@@ -15,9 +16,7 @@ _urls: dict[str, str] = {
 }
 
 _base_headers: dict[str, str] = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/114.0.0.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
     "Origin": "https://jywg.18.cn",
     "Host": "jywg.18.cn",
 }
-
